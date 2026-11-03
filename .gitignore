@@ -29,7 +29,8 @@ __pycache__/
 .env
 .env.*
 !.env.example
- 
+
+
 # Arquivos temporários do sistema
 *.log
 .DS_Store

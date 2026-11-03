@@ -1,0 +1,250 @@
+[
+    {
+        "Cenario": "MAD 3.000",
+        "Reduction": "UMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.8426892757415771,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "min_cluster_size": 15,
+            "min_samples": 10
+        }
+    },
+    {
+        "Cenario": "MAD 3.000",
+        "Reduction": "UMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.8426892757415771,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "n_neighbors": 50,
+            "resolution": 0.1
+        }
+    },
+    {
+        "Cenario": "MAD 3.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.8375822305679321,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 2.0
+        },
+        "Clustering_params": {
+            "min_cluster_size": 50,
+            "min_samples": 15
+        }
+    },
+    {
+        "Cenario": "MAD 3.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.8375822305679321,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 2.0
+        },
+        "Clustering_params": {
+            "n_neighbors": 15,
+            "resolution": 0.05
+        }
+    },
+    {
+        "Cenario": "MAD 5.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.8286917209625244,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 2.0
+        },
+        "Clustering_params": {
+            "min_cluster_size": 50,
+            "min_samples": 10
+        }
+    },
+    {
+        "Cenario": "MAD 5.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.8286917209625244,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 2.0
+        },
+        "Clustering_params": {
+            "n_neighbors": 30,
+            "resolution": 0.05
+        }
+    },
+    {
+        "Cenario": "MAD 10.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.8208870887756348,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 3.0
+        },
+        "Clustering_params": {
+            "min_cluster_size": 15,
+            "min_samples": 5
+        }
+    },
+    {
+        "Cenario": "MAD 10.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.8208870887756348,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 3.0
+        },
+        "Clustering_params": {
+            "n_neighbors": 30,
+            "resolution": 0.05
+        }
+    },
+    {
+        "Cenario": "MAD 5.000",
+        "Reduction": "UMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.8020856380462646,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "min_cluster_size": 30,
+            "min_samples": 15
+        }
+    },
+    {
+        "Cenario": "MAD 5.000",
+        "Reduction": "UMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.8020856380462646,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "n_neighbors": 50,
+            "resolution": 0.05
+        }
+    },
+    {
+        "Cenario": "MAD 20.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.7807945609092712,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 3.0
+        },
+        "Clustering_params": {
+            "n_neighbors": 50,
+            "resolution": 0.08
+        }
+    },
+    {
+        "Cenario": "MAD 20.000",
+        "Reduction": "PaCMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.7807945609092712,
+        "Reduction_params": {
+            "n_neighbors": 50,
+            "MN_ratio": 0.5,
+            "FP_ratio": 3.0
+        },
+        "Clustering_params": {
+            "min_cluster_size": 50,
+            "min_samples": 15
+        }
+    },
+    {
+        "Cenario": "MAD 10.000",
+        "Reduction": "UMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.7499572038650513,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "min_cluster_size": 30,
+            "min_samples": 15
+        }
+    },
+    {
+        "Cenario": "MAD 10.000",
+        "Reduction": "UMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.7499572038650513,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "n_neighbors": 50,
+            "resolution": 0.1
+        }
+    },
+    {
+        "Cenario": "MAD 20.000",
+        "Reduction": "UMAP",
+        "Clustering": "Leiden",
+        "Metric": "Silhouette",
+        "Score": 0.6152169108390808,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "n_neighbors": 50,
+            "resolution": 0.08
+        }
+    },
+    {
+        "Cenario": "MAD 20.000",
+        "Reduction": "UMAP",
+        "Clustering": "HDBSCAN",
+        "Metric": "Silhouette",
+        "Score": 0.6152169108390808,
+        "Reduction_params": {
+            "n_neighbors": 15,
+            "min_dist": 0.01
+        },
+        "Clustering_params": {
+            "min_cluster_size": 15,
+            "min_samples": 10
+        }
+    }
+]

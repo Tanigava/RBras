@@ -1,79 +1,122 @@
 from pathlib import Path
- 
-# Raiz do repositório: diretório pai de src/
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
- 
-DATA_RAW = PROJECT_ROOT / "data" / "raw"
-DATA_PROCESSED = PROJECT_ROOT / "data" / "processed"
-RESULTS = PROJECT_ROOT / "results"
-FIGURES = RESULTS / "figures"
-TABLES = RESULTS / "tables"
- 
-# Exemplos de arquivos esperados (ajuste os nomes aos seus arquivos reais)
-CLINICAL_FILE = DATA_RAW / "data_clinical_patient.txt"
-MAD_3000_FILE = DATA_PROCESSED / "dados_VST_MAD_3000.csv"
-MAD_5000_FILE = DATA_PROCESSED / "Zscore_VST_MAD5000.csv"
-MAD_10000_FILE = DATA_PROCESSED / "Zscore_VST_MAD10000.csv"
-MAD_20000_FILE = DATA_PROCESSED / "Zscore_VST_MAD20000.csv"
-
-
-
 import pandas as pd
-import numpy as np
- 
-COLUNAS_CLINICAS = {
-    "PAM50", "SUBTYPE", "CLASS", "ROTULO", "BRCA_SUBTYPE"
-}
- 
+
+
+
+def load_clinical_data(path):
+    """
+    Carrega a tabela clínica e constrói um dicionário
+    relacionando o identificador do paciente ao subtipo.
+    """
+
+    pacientes = pd.read_csv(
+        path,
+        sep=",",
+        index_col="PATIENT_ID"
+    )
+
+    pacientes.index = (
+        pacientes.index.astype(str)
+        .str.replace(".", "-", regex=False)
+    )
+
+    pacientes["SUBTYPE"] = (
+        pacientes["SUBTYPE"].fillna("Desconhecido")
+    )
+
+    dict_subtipos = {
+        str(idx)[:12]: row["SUBTYPE"]
+        for idx, row in pacientes.iterrows()
+    }
+
+    return pacientes, dict_subtipos
+
+
 def load_expression_matrix(path):
-    """Carrega matriz e padroniza para amostras nas linhas e genes nas colunas."""
+    """
+    Carrega uma matriz de expressão gênica,
+    identifica sua orientação e remove possíveis
+    colunas clínicas.
+    """
+
     df = pd.read_csv(path, index_col=0)
-    df.index = df.index.astype(str).str.replace(".", "-", regex=False)
 
+    df.index = (
+        df.index.astype(str)
+        .str.replace(".", "-", regex=False)
+    )
 
-    # Regra heurística usada no script original; confira a orientação
-    # com as dimensões e os identificadores do arquivo antes de confiar nela.
+    # Identificar orientação amostras x genes
     if df.shape[0] > df.shape[1]:
         df = df.T
- 
+
+    # Remover possíveis colunas clínicas
+    colunas_clinicas = [
+        "PAM50",
+        "SUBTYPE",
+        "CLASS",
+        "ROTULO",
+        "BRCA_SUBTYPE"
+    ]
+
     df = df.drop(
-        columns=[c for c in df.columns
-                 if str(c).upper() in COLUNAS_CLINICAS],
+        columns=[
+            col for col in df.columns
+            if str(col).upper() in colunas_clinicas
+        ],
         errors="ignore"
     )
+
     return df
- 
-def load_pam50_labels(path):
-    clinical = pd.read_csv(
-        path, comment="#", sep="\t", index_col="PATIENT_ID"
-    )
-    clinical.index = clinical.index.astype(str).str.replace(".", "-", regex=False)
-    clinical["SUBTYPE"] = clinical["SUBTYPE"].fillna("Desconhecido")
- 
-    labels = {
-        str(patient_id)[:12]: row["SUBTYPE"]
-        for patient_id, row in clinical.iterrows()
-    }
-    return labels
- 
-def map_labels(sample_ids, subtype_dict):
-    return np.array([
-        subtype_dict.get(str(sample_id)[:12], "Desconhecido")
-        for sample_id in sample_ids
-    ])
 
 
-import numpy as np
-import pandas as pd
- 
-def select_top_mad_genes(X, n_genes):
-    """Seleciona as n_genes colunas com maior MAD.
- 
-    X deve ter amostras nas linhas e genes nas colunas.
+def load_datasets(mad_dir):
     """
-    mad = X.apply(
-        lambda col: np.median(np.abs(col - np.median(col))),
-        axis=0
+    Carrega os quatro cenários de expressão gênica
+    armazenados na pasta mad_datasets.
+    """
+
+    cenarios_dados = {
+        "MAD 3.000": "VST_ZSCORE_MAD_3000.csv",
+        "MAD 5.000": "VST_ZSCORE_MAD_5000.csv",
+        "MAD 10.000": "VST_ZSCORE_MAD_10000.csv",
+        "MAD 20.000": "VST_ZSCORE_MAD_20000.csv"
+    }
+
+    datasets = {}
+
+    for nome, arquivo in cenarios_dados.items():
+
+        caminho = Path(mad_dir) / arquivo
+
+        if not caminho.exists():
+            print(f"Arquivo não encontrado: {caminho}")
+            continue
+
+        df = load_expression_matrix(caminho)
+
+        datasets[nome] = df
+
+        print(f"\n{nome}")
+        print("Dimensões:", df.shape)
+
+    return datasets
+
+
+def map_patient_subtypes(sample_ids, dict_subtipos):
+    """
+    Associa cada amostra ao subtipo clínico PAM50,
+    utilizando os primeiros 12 caracteres do identificador.
+    """
+
+    return pd.Series(
+        [
+            dict_subtipos.get(
+                str(idx)[:12],
+                "Desconhecido"
+            )
+            for idx in sample_ids
+        ],
+        index=sample_ids,
+        name="SUBTYPE"
     )
-    selected = mad.nlargest(min(n_genes, X.shape[1])).index
-    return X.loc[:, selected], mad.loc[selected]
