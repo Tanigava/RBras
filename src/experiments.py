@@ -1,6 +1,9 @@
 
 import itertools
 import json
+import io
+import warnings
+from contextlib import contextmanager, redirect_stdout
 from pathlib import Path
 
 import numpy as np
@@ -17,6 +20,21 @@ from src.clustering import (
 )
 
 from src.metrics import calculate_metrics
+
+
+@contextmanager
+def _model_output_context(verbose=True):
+    """Controla a saída textual e os warnings emitidos pelos modelos.
+
+    Quando verbose=False, suprime prints/stdout e warnings convencionais
+    durante a execução do modelo. Exceções continuam sendo propagadas.
+    """
+    if verbose:
+        yield
+    else:
+        with redirect_stdout(io.StringIO()), warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            yield
 
 
 # ============================================================
@@ -47,7 +65,8 @@ def run_reduction(
     X,
     method,
     params,
-    random_state=42
+    random_state=42,
+    verbose=True
 ):
     """
     Executa a técnica de redução escolhida.
@@ -66,11 +85,12 @@ def run_reduction(
         if "FP_ratio" in params:
             params["FP_ratio"] = float(params["FP_ratio"])
 
-        embedding, model = run_pacmap(
-            X,
-            **params,
-            random_state=random_state
-        )
+        with _model_output_context(verbose):
+            embedding, model = run_pacmap(
+                X,
+                **params,
+                random_state=random_state
+            )
 
     elif method == "UMAP":
 
@@ -80,11 +100,12 @@ def run_reduction(
         if "min_dist" in params:
             params["min_dist"] = float(params["min_dist"])
 
-        embedding, model = run_umap(
-            X,
-            **params,
-            random_state=random_state
-        )
+        with _model_output_context(verbose):
+            embedding, model = run_umap(
+                X,
+                **params,
+                random_state=random_state
+            )
 
     elif method == "PCA":
 
@@ -108,7 +129,8 @@ def run_clustering(
     X,
     method,
     params,
-    random_state=42
+    random_state=42,
+    verbose=True
 ):
     """
     Executa o algoritmo de agrupamento escolhido.
@@ -128,10 +150,11 @@ def run_clustering(
                 params["min_samples"]
             )
 
-        labels, model = run_hdbscan(
-            X,
-            **params
-        )
+        with _model_output_context(verbose):
+            labels, model = run_hdbscan(
+                X,
+                **params
+            )
 
     elif method == "Leiden":
 
@@ -145,11 +168,12 @@ def run_clustering(
                 params["resolution"]
             )
 
-        labels, model = run_leiden(
-            X,
-            seed=random_state,
-            **params
-        )
+        with _model_output_context(verbose):
+            labels, model = run_leiden(
+                X,
+                seed=random_state,
+                **params
+            )
 
     else:
 
@@ -171,7 +195,8 @@ def run_grid_search(
     clustering_grids,
     random_state=42,
     n_neighbors_metric=15,
-    verbose=True
+    verbose=True,
+    show_errors=True
 ):
     """
     Executa o Grid Search combinando técnicas de redução
@@ -204,12 +229,13 @@ def run_grid_search(
                     X,
                     reduction_method,
                     reduction_params,
-                    random_state=random_state
+                    random_state=random_state,
+                    verbose=verbose
                 )
 
             except Exception as error:
 
-                if verbose:
+                if show_errors:
                     print(
                         f"Erro na redução {reduction_method}: {error}"
                     )
@@ -236,7 +262,8 @@ def run_grid_search(
                             embedding,
                             clustering_method,
                             clustering_params,
-                            random_state=random_state
+                            random_state=random_state,
+                            verbose=verbose
                         )
 
                         metrics = calculate_metrics(
@@ -278,7 +305,7 @@ def run_grid_search(
 
                     except Exception as error:
 
-                        if verbose:
+                        if show_errors:
                             print(
                                 f"Erro em {clustering_method}: {error}"
                             )

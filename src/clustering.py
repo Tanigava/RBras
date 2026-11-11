@@ -10,7 +10,8 @@ from sklearn.neighbors import NearestNeighbors
 def run_hdbscan(
     X,
     min_cluster_size=15,
-    min_samples=5
+    min_samples=5,
+    verbose = False
 ):
     """
     Aplica HDBSCAN.
@@ -26,12 +27,14 @@ def run_hdbscan(
     return labels, model
 
 
+
 def run_leiden(
     X,
     n_neighbors=15,
     resolution=0.1,
     seed=42,
-    weight_mode="none"
+    weight_mode="none",
+    verbose = False
 ):
     """
     Constrói um grafo KNN e aplica Leiden.

@@ -28,7 +28,8 @@ def run_pacmap(
     MN_ratio=0.5,
     FP_ratio=2.0,
     n_components=2,
-    random_state=42
+    random_state=42,
+    verbose = False
 ):
     import pacmap
 
@@ -37,7 +38,8 @@ def run_pacmap(
         n_neighbors=n_neighbors,
         MN_ratio=MN_ratio,
         FP_ratio=FP_ratio,
-        random_state=random_state
+        random_state=random_state,
+        verbose = False
     )
 
     embedding = model.fit_transform(X)
@@ -50,7 +52,8 @@ def run_umap(
     n_neighbors=15,
     min_dist=0.1,
     n_components=2,
-    random_state=42
+    random_state=42,
+    verbose = False
 ):
     """
     Aplica UMAP.
@@ -60,7 +63,8 @@ def run_umap(
         n_neighbors=n_neighbors,
         min_dist=min_dist,
         n_components=n_components,
-        random_state=random_state
+        random_state=random_state,
+        verbose = False
     )
 
     embedding = model.fit_transform(X)
