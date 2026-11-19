@@ -4,7 +4,6 @@ venv/
 env/
  
 # Dados de expressão e dados clínicos
-data/raw/
 data/processed/
 *.csv
 *.tsv
@@ -35,3 +34,7 @@ __pycache__/
 *.log
 .DS_Store
 Thumbs.db
+
+
+04_analises_2.ipynb
+teste.ipynb
